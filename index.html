@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Laureen ✨</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <!-- External Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Background Particle Canvas -->
+  <canvas id="sparkleCanvas"></canvas>
+
+  <!-- Floating Admin Bar (Appears when logged in) -->
+  <div class="admin-bar" id="adminBar">
+    <span class="admin-badge"><i class="fa-solid fa-user-gear"></i> Admin Mode</span>
+    <button class="btn-admin-action" onclick="triggerCoverUpload()"><i class="fa-solid fa-image"></i> Change Cover</button>
+    <button class="btn-admin-action" onclick="logoutAdmin()"><i class="fa-solid fa-right-from-bracket"></i> Exit</button>
+  </div>
+
+  <!-- Hidden File Input for Admin Cover Photo Update -->
+  <input type="file" id="coverPhotoInput" accept="image/*" style="display: none;" onchange="handleCoverUpdate(event)">
+
+  <!-- Hidden File Input for Admin Letter Photo Update -->
+  <input type="file" id="letterPhotoInput" accept="image/*" style="display: none;" onchange="handleLetterUpdate(event)">
+
+
+  <!-- ================================================================= -->
+  <!-- PAGE 1: WELCOME SCREEN                                            -->
+  <!-- ================================================================= -->
+  <div class="screen active" id="welcomeScreen">
+    <div class="welcome-card">
+      <div class="welcome-icon">
+        <i class="fa-solid fa-envelope-open-text"></i>
+      </div>
+      <div class="welcome-subtitle">A Special Birthday Delivery</div>
+      <h1 class="welcome-title">For Laureen✨</h1>
+      <p class="welcome-message">
+        Inside awaits a collection of handwritten notes, warm memories, and heartfelt wishes created just for your special day.
+      </p>
+      <button class="btn-enter" onclick="navigateToPage(2)">
+        Open Birthday Card <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
+
+  <!-- ================================================================= -->
+  <!-- PAGE 2: MAIN BIRTHDAY EXPERIENCE                                   -->
+  <!-- ================================================================= -->
+  <div class="screen" id="mainScreen">
+    
+    <!-- Top Nav with Integrated Music Toggle Button -->
+    <div class="nav-bar">
+      <button class="btn-back" onclick="navigateToPage(1)">
+        <i class="fa-solid fa-chevron-left"></i> Welcome Page
+      </button>
+      <div class="nav-title">
+        Laureen's Day
+      </div>
+      <button class="btn-music" id="musicToggleBtn" onclick="toggleMusic()" title="Play/Pause Music">
+        <i class="fa-solid fa-music" id="musicIcon"></i>
+      </button>
+    </div>
+
+    <!-- Hero Header with 75% Opacity Cover Photo Behind Text -->
+    <div class="hero-container">
+      <img src="coverphoto.jpg" 
+           alt="Laureen Birthday Girl" 
+           class="cover-photo-bg" 
+           id="coverImageDisplay">
+      
+      <!-- Gradient Tint Overlay -->
+      <div class="hero-tint-overlay"></div>
+
+      <!-- Text Content Directly On Top -->
+      <div class="hero-content">
+        <div class="hero-tag">Celebrating You</div>
+        <h1 class="hero-title">Happy 18th Birthday<br>Laureen</h1>
+        <div class="hero-date"><i class="fa-solid fa-sparkles"></i> October 14, 2026</div>
+      </div>
+    </div>
+
+    <!-- Handwritten Letters Section Header -->
+    <div class="section-header">
+      <h2 class="section-title">18 Handwritten Letters</h2>
+      <p class="section-desc">Click any envelope below to unseal and read the notes inside.</p>
+    </div>
+
+    <!-- Envelopes Grid -->
+    <div class="envelopes-grid" id="envelopesGrid"></div>
+
+    <!-- Footer with Discreet Admin Gateway -->
+    <div class="footer-admin-trigger">
+      <p>Made with 💜 for Laureen's Birthday</p>
+      <button class="lock-icon-btn" onclick="openAdminLoginModal()" title="Admin Login">
+        <i class="fa-solid fa-lock"></i>
+      </button>
+    </div>
+
+  </div>
+
+
+  <!-- ================================================================= -->
+  <!-- LETTER LIGHTBOX MODAL                                             -->
+  <!-- ================================================================= -->
+  <div class="modal-overlay" id="letterModal">
+    <div class="modal-paper">
+      <div class="modal-header">
+        <span class="modal-title-text" id="modalLetterTitle">Handwritten Letter</span>
+        <div class="modal-header-actions">
+          <button class="btn-admin-action replace-btn" id="adminReplaceLetterBtn" onclick="triggerLetterUpload()">
+            <i class="fa-solid fa-upload"></i> Replace Scan
+          </button>
+          <button class="btn-close-modal" onclick="closeLetterModal()">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="letter-image-wrapper">
+          <img src="" alt="Handwritten Letter Scan" id="modalLetterImg" class="letter-img">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ================================================================= -->
+  <!-- ADMIN LOGIN MODAL                                                -->
+  <!-- ================================================================= -->
+  <div class="modal-overlay" id="adminModal">
+    <div class="admin-modal-card">
+      <i class="fa-solid fa-shield-halved admin-modal-icon"></i>
+      <h3 class="admin-modal-title">Admin Access</h3>
+      <p class="admin-modal-desc">Enter PIN to unlock photo update controls</p>
+      
+      <input type="password" id="adminPinInput" class="admin-input" placeholder="Enter PIN (Default: 1234)">
+      
+      <div class="admin-btn-group">
+        <button class="btn-back" onclick="closeAdminModal()">Cancel</button>
+        <button class="btn-enter admin-submit-btn" onclick="attemptAdminLogin()">Unlock</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Background Music Player -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="bg music.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- External Script File -->
+  <script src="script.js"></script>
+</body>
+</html>
