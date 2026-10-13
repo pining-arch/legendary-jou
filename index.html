@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Susi para mag-fit sa mobile screen nang walang auto-zoom/zoom out -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Happy Birthday Laureen ✨</title>
   
   <!-- Google Fonts -->
@@ -72,11 +73,15 @@
         Laureen's Day
       </div>
       <button class="btn-music" id="musicToggleBtn" onclick="toggleMusic()" title="Play/Pause Music">
-        <i class="fa-solid fa-music" id="musicIcon"></i>
+        <div class="music-bars" id="musicBars">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
       </button>
     </div>
 
-    <!-- Hero Header with 75% Opacity Cover Photo Behind Text -->
+    <!-- Hero Header with Cover Photo -->
     <div class="hero-container">
       <img src="coverphoto.jpg" 
            alt="Laureen Birthday Girl" 
@@ -159,7 +164,7 @@
 
   <!-- Background Music Player -->
   <audio id="bgMusic" loop preload="auto">
-    <source src="bg music.mp3" type="audio/mpeg">
+    <source src="audio/bday-song.mp3" type="audio/mpeg">
   </audio>
 
   <!-- External Script File -->
