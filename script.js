@@ -37,7 +37,7 @@ const letterScans = [
   "letter/mamadade.mp4",
   "letter/shyrann.jpg",
   "letter/gret.jpg",
-  "letter/letter 9.jpg",
+  "letter/shiena.jpg",
   "letter/letter 10.jpg",
   "letter/letter 11.jpg",
   "letter/letter 12.jpg",
